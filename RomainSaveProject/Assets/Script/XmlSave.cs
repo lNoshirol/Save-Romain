@@ -28,7 +28,7 @@ public class XmlSave : MonoBehaviour
             Indent = true,
         };
 
-        XmlWriter writer = XmlWriter.Create(Application.persistentDataPath + "/save.xml", settings);
+        XmlWriter writer = XmlWriter.Create("Assets" + "/save.xml", settings);
         writer.WriteStartDocument();
 
         writer.WriteStartElement("global");
@@ -45,7 +45,7 @@ public class XmlSave : MonoBehaviour
 
 
 
-
+        
 
 
 
@@ -61,13 +61,13 @@ public class XmlSave : MonoBehaviour
     {
         XmlDocument saveFile = new XmlDocument();
 
-        if (!System.IO.File.Exists(Application.persistentDataPath + "/save.xml"))
+        if (!System.IO.File.Exists("Assets" + "/save.xml"))
         {
             Debug.LogError("Tu te fou de ma gueule fdp");
             return;
         }
 
-        saveFile.Load(System.IO.File.ReadAllText(Application.persistentDataPath + "/save.xml"));
+        saveFile.Load(System.IO.File.ReadAllText("Assets" + "/save.xml"));
 
         string key;
         string value;
