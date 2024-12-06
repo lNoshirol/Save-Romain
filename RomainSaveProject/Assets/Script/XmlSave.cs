@@ -4,6 +4,8 @@ using UnityEngine;
 using System.Xml;
 using TMPro;
 using Unity.VisualScripting;
+using static UnityEngine.Rendering.DebugUI;
+using System.Threading.Tasks;
 
 public class XmlSave : MonoBehaviour
 {
@@ -12,11 +14,12 @@ public class XmlSave : MonoBehaviour
     public TextMeshProUGUI countText;
 
     public string myName;
-
+    bool isStarted;
 
     private void Start()
     {
         Debug.Log(Application.persistentDataPath.ToString());
+        isStarted = true;
         LoadGame();
     }
 
@@ -53,8 +56,6 @@ public class XmlSave : MonoBehaviour
 
         writer.WriteEndDocument();
         writer.Close();
-
-        LoadGame();
     }
 
     public void LoadGame()
@@ -67,16 +68,13 @@ public class XmlSave : MonoBehaviour
             return;
         }
 
-        saveFile.Load(System.IO.File.ReadAllText("Assets" + "/save.xml"));
+        saveFile.Load("Assets" + "/save.xml");
 
         string key;
         string value;
 
-        Debug.Log(saveFile.ChildNodes.Count);
-
-        foreach (XmlNode node in saveFile.ChildNodes[0])
+        foreach (XmlNode node in saveFile.ChildNodes[1])
         {
-
             key = node.Name;
             value = node.InnerText;
 
@@ -90,8 +88,16 @@ public class XmlSave : MonoBehaviour
                     timeText.text = value;
                     break;
                 case "buttonPress":
-                    countText.text = value;
-                    GetComponent<ClickButtonCount>().count = int.Parse(value);
+                    if (isStarted)
+                    {
+                        countText.text = value;
+                        GetComponent<ClickButtonCount>().count = int.Parse(value);
+                        isStarted = false;
+                    }
+                    else
+                    {
+                        countText.text = value;
+                    }
                     break;
             }
         }

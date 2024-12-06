@@ -14,6 +14,7 @@ public class tkt : MonoBehaviour
     public void OnValueChange()
     {
         nameToChenge.myName = GetComponent<TMP_InputField>().text;
+        nameToChenge.SaveTheGame();
     }
 
     public void OnEndEdit()
